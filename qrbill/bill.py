@@ -693,11 +693,11 @@ class QRBill:
 
         if self.additional_information:
             add_header(self.label("Additional information"))
-            if '//' in self.additional_information:
-                additional_information = self.additional_information.split('//')
-                additional_information[1] = '//' + additional_information[1]
-            else:
-                additional_information = [self.additional_information]
+            # if '//' in self.additional_information:
+            #     additional_information = self.additional_information.split('//')
+            #     additional_information[1] = '//' + additional_information[1]
+            # else:
+            additional_information = [self.additional_information]
             # TODO: handle line breaks for long infos (mandatory 5mm margin)
             for info in wrap_infos(additional_information):
                 grp.add(dwg.text(info, (payment_detail_left, mm(y_pos)), **self.font_info))
