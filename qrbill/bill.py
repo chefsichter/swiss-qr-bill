@@ -211,13 +211,13 @@ class QRBill:
     version = '0200'
     coding = 1  # Latin character set
     allowed_currencies = ('CHF', 'EUR')
-    font_family = 'Arial,Helvetica'
 
     def __init__(
             self, account=None, creditor=None, final_creditor=None, amount=None,
             currency='CHF', debtor=None, ref_number=None,
             reference_number=None, extra_infos='', additional_information='',
-            alt_procs=(), language='en', top_line=True, payment_line=True, font_factor=1):
+            alt_procs=(), language='en', top_line=True, payment_line=True,
+            font_family='Arial,Helvetica', font_factor=1):
         """
         Arguments
         ---------
@@ -244,6 +244,8 @@ class QRBill:
             print a vertical line between the receipt and the bill itself
         font_factor: integer
             a zoom factor for all texts in the bill
+        font_family: str
+            'Arial,Helvetica'
         """
         # Account (IBAN) validation
         if not account:
@@ -360,6 +362,7 @@ class QRBill:
         self.language = language
         self.top_line = top_line
         self.payment_line = payment_line
+        self.font_family = font_family
         self.font_factor = font_factor
 
     @property
@@ -563,12 +566,12 @@ class QRBill:
             y_pos += 28
 
         grp.add(dwg.text(self.label("Currency"), (margin, currency_top), **receipt_head_font))
-        grp.add(dwg.text(self.label("Amount"), (add_mm(margin, mm(12)), currency_top), **receipt_head_font))
+        grp.add(dwg.text(self.label("Amount"), (add_mm(margin, mm(self.font_factor*12)), currency_top), **receipt_head_font))
         grp.add(dwg.text(self.currency, (margin, add_mm(currency_top, mm(5))), **self.font_info))
         if self.amount:
             grp.add(dwg.text(
                 format_amount(self.amount),
-                (add_mm(margin, mm(12)), add_mm(currency_top, mm(5))),
+                (add_mm(margin, mm(self.font_factor*12)), add_mm(currency_top, mm(5))),
                 **self.font_info
             ))
         else:
@@ -649,12 +652,12 @@ class QRBill:
         self.draw_swiss_cross(dwg, grp, (payment_left, qr_top), im.width * scale_factor)
 
         grp.add(dwg.text(self.label("Currency"), (payment_left, currency_top), **payment_head_font))
-        grp.add(dwg.text(self.label("Amount"), (add_mm(payment_left, mm(12)), currency_top), **payment_head_font))
+        grp.add(dwg.text(self.label("Amount"), (add_mm(payment_left, mm(self.font_factor*13)), currency_top), **payment_head_font))
         grp.add(dwg.text(self.currency, (payment_left, add_mm(currency_top, mm(5))), **self.font_info))
         if self.amount:
             grp.add(dwg.text(
                 format_amount(self.amount),
-                (add_mm(payment_left, mm(12)), add_mm(currency_top, mm(5))),
+                (add_mm(payment_left, mm(self.font_factor*13)), add_mm(currency_top, mm(5))),
                 **self.font_info
             ))
         else:
