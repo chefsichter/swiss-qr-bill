@@ -58,7 +58,7 @@ To split the number and get properties for each part:
 [('1', {'prop1': 'foo'}), ('200', {'prop2': 'bar', 'prop3': 'baz'}), ('333', {'prop4': 'bax'})]
 
 """
-
+import os
 import re
 
 
@@ -162,7 +162,8 @@ def _get_resource_stream(name):
     """Return a readable file-like object for the resource."""
     try:  # pragma: no cover (Python 3.9 and newer)
         import importlib.resources
-        return importlib.resources.files(__package__).joinpath(name).open('rb')
+        root = str(importlib.resources.files(__package__)).replace("/", os.sep)
+        return os.path.join(root, name).open('rb')
     except (ImportError, AttributeError):  # pragma: no cover (older Python versions)
         import pkg_resources
         return pkg_resources.resource_stream(__name__, name)
