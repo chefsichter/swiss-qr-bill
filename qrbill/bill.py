@@ -9,8 +9,8 @@ import qrcode
 import qrcode.image.svg
 import svgwrite
 from iso3166 import countries
-from stdnum import iban, iso11649
-from stdnum.ch import esr
+from .stdnum import iban, iso11649
+from .stdnum.ch import esr
 
 IBAN_ALLOWED_COUNTRIES = ['CH', 'LI']
 QR_IID = {"start": 30000, "end": 31999}
